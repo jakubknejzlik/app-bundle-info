@@ -1,6 +1,5 @@
 unzip = require('unzip')
 fs = require('fs')
-plistParse = require('./plist-parse')
 stream = require('stream')
 streamToBuffer = require('stream-to-buffer')
 
