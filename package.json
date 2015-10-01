@@ -3,11 +3,11 @@
   "version": "0.0.12",
   "keywords": "ipa,bundle,app,plist,info,unzip",
   "dependencies": {
-    "apk-parser2": "x",
+    "apk-parser2": "0.1.1",
     "binary": "0.3.0",
     "bplist": "0.0.4",
     "plist": "^1.1.0",
-    "stream-to-buffer": "x",
+    "stream-to-buffer": "0.1.0",
     "unzip": "git+https://github.com/jakubknejzlik/node-unzip-2.git"
   },
   "scripts": {
@@ -15,5 +15,9 @@
   },
   "devDependencies": {
     "async": "^1.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakubknejzlik/app-bundle-info.git"
   }
 }
