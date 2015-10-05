@@ -2,6 +2,7 @@
   "name": "app-bundle-info",
   "version": "0.1.0",
   "keywords": "ipa,bundle,app,plist,info,unzip",
+  "license": "MIT",
   "dependencies": {
     "apk-parser2": "0.1.1",
     "binary": "0.3.0",
