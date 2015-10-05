@@ -1,6 +1,6 @@
 {
   "name": "app-bundle-info",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "keywords": "ipa,bundle,app,plist,info,unzip",
   "dependencies": {
     "apk-parser2": "0.1.1",
