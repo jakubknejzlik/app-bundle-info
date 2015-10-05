@@ -5,15 +5,17 @@ apkParser = require('apk-parser2')
 BinaryXML = require('./BinaryXML')
 
 class AndroidAppBundleInfo extends AppBundleInfo
-  constructor:(filePathOrStream)->
-    super filePathOrStream
+  @::manifestPath = 'AndroidManifest.xml'
+  constructor:(pathOrStream)->
+    super(pathOrStream)
     @_infoLoaded = no
     @_info = {}
+    @type = 'android'
 
   _loadFileInfo:(callback)->
     if @_infoLoaded
       return callback()
-    @_findFileStream(/^AndroidManifest.xml$/,(err,fileStream)=>
+    @findFileStream(@manifestPath,(err,fileStream)=>
       return callback(err) if err
       streamToBuffer(fileStream,(err,data)=>
         bxml = new BinaryXML(data)
@@ -32,7 +34,7 @@ class AndroidAppBundleInfo extends AppBundleInfo
 
 
   getIconFile:(callback)->
-    @_findFileStream(/^drawable-*\/ic_launcher.png$/,callback)
+    @findFileStream('**/drawable-*/ic_launcher.png',callback)
 
 
 

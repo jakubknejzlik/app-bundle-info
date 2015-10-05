@@ -11,7 +11,7 @@ var files = [
 describe('ios',function(){
     it('should load and parse Info.plist from file',function(done){
         async.forEach(files,function(file,cb){
-            var abi = new AppBundleInfo.ios(file.file);
+            var abi = new AppBundleInfo.iOS(file.file);
 
             abi.getPlist(function(err,data){
                 if(err)return cb(err);
@@ -26,7 +26,7 @@ describe('ios',function(){
 
     it('should load and parse Info.plist from stream',function(done){
         async.forEach(files,function(file,cb){
-            var abi = new AppBundleInfo.ios(fs.createReadStream(file.file));
+            var abi = new AppBundleInfo.iOS(fs.createReadStream(file.file));
 
             abi.getPlist(function(err,data){
                 if(err)return cb(err);
@@ -34,13 +34,16 @@ describe('ios',function(){
                 assert.equal(data.CFBundleVersion,file.version);
                 assert.equal(data.CFBundleName,file.name);
 
-                cb();
+                abi.getIconFile(function(err,iconData){
+                    assert.ifError(err);
+                    cb();
+                })
             });
         },done);
     })
 
     it('should finish on invalid file',function(done){
-        var abi = new AppBundleInfo.ios(fs.createReadStream(__dirname+'/test.apk'));
+        var abi = new AppBundleInfo.iOS(fs.createReadStream(__dirname+'/test.apk'));
 
         abi.getPlist(function(err){
             assert.ok(!!err);

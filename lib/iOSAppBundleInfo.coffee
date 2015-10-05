@@ -5,15 +5,17 @@ plist = require('plist')
 bplist = require('bplist')
 
 class iOSAppBundleInfo extends AppBundleInfo
-  constructor:(filePathOrStream)->
-    super filePathOrStream
+  @::plistPath = 'Payload/*.app/Info.plist'
+  constructor:(pathOrStream)->
+    super(pathOrStream)
     @_infoLoaded = no
     @_info = {}
+    @type = 'ios'
 
   _loadFileInfo:(callback)->
     if @_infoLoaded
       return callback()
-    @_findFileStream(/^Payload\/[^\/]+\.app\/Info.plist$/,(err,fileStream)=>
+    @findFileStream(@plistPath,(err,fileStream)=>
       return callback(err) if err
 #      console.log('stream to buffer',fileStream)
       streamToBuffer(fileStream,(err,data)=>
@@ -48,7 +50,7 @@ class iOSAppBundleInfo extends AppBundleInfo
 
 
   getIconFile:(callback)->
-    @_findFileStream(/^Payload\/[^\/]+\.app\/AppIcon60x60@.*\.png$/,callback)
+    @findFileStream('Payload/*.app/AppIcon60x60@*.png',callback)
 
 
 

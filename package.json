@@ -6,8 +6,13 @@
     "apk-parser2": "0.1.1",
     "binary": "0.3.0",
     "bplist": "0.0.4",
+    "fs-extra": "^0.24.0",
+    "fstream": "^1.0.8",
+    "glob": "^5.0.15",
+    "lock": "^0.1.2",
     "plist": "^1.1.0",
     "stream-to-buffer": "0.1.0",
+    "tmp": "0.0.28",
     "unzip": "git+https://github.com/jakubknejzlik/node-unzip-2.git"
   },
   "scripts": {

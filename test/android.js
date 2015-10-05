@@ -4,7 +4,7 @@ var fs = require('fs')
 
 describe('android',function(){
     it('should load and parse manifest from file',function(done){
-        var abi = new AppBundleInfo.android(__dirname+'/test.apk');
+        var abi = new AppBundleInfo.Android(__dirname+'/test.apk');
 
         abi.getManifest(function(err,data){
             if(err)return done(err);
@@ -19,7 +19,7 @@ describe('android',function(){
     })
 
     it('should load and parse manifest from stream',function(done){
-        var abi = new AppBundleInfo.android(fs.createReadStream(__dirname+'/test.apk'));
+        var abi = new AppBundleInfo.Android(fs.createReadStream(__dirname+'/test.apk'));
 
         abi.getManifest(function(err,data){
             if(err)return done(err);
@@ -28,13 +28,16 @@ describe('android',function(){
             assert.equal(data.versionName,'1.0');
             assert.equal(data.package,'com.octo.android.robodemo.sample');
 
-            done()
+            abi.getIconFile(function(err,iconData){
+                assert.ifError(err);
+                done();
+            })
         })
 
     })
 
     it('should finish on invalid file',function(done){
-        var abi = new AppBundleInfo.android(fs.createReadStream(__dirname+'/test.ipa'));
+        var abi = new AppBundleInfo.Android(fs.createReadStream(__dirname+'/test.ipa'));
 
         abi.getManifest(function(err){
             assert.ok(!!err);
