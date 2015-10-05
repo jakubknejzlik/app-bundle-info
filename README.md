@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jakubknejzlik/app-bundle-info.svg?branch=master)](https://travis-ci.org/jakubknejzlik/app-bundle-info)
 
-Get information application bundle files (ipa (iOS) and apk (Android) are currently supported).
+Get information from application bundle files (ipa (iOS) and apk (Android) are currently supported).
 
 ## iOS
 Module is able to parse information from plist and get PNG icon file (currently the file is compressed with xcode).
