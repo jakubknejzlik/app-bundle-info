@@ -3,6 +3,7 @@ stream = require('stream')
 streamToBuffer = require('stream-to-buffer')
 plist = require('plist')
 bplist = require('bplist')
+cgbiToPng = require('cgbi-to-png')
 
 class iOSAppBundleInfo extends AppBundleInfo
   @::plistPath = 'Payload/*.app/Info.plist'
@@ -50,7 +51,11 @@ class iOSAppBundleInfo extends AppBundleInfo
 
 
   getIconFile:(callback)->
-    @findFileStream('Payload/*.app/AppIcon60x60@*.png',callback)
+    @findFileStream('Payload/*.app/AppIcon60x60@*.png',(err,stream)->
+      return callback(err) if err
+      return callback() if not stream
+      cgbiToPng(stream,callback)
+    )
 
 
 

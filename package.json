@@ -8,6 +8,7 @@
     "apk-parser2": "0.1.1",
     "binary": "0.3.0",
     "bplist": "0.0.4",
+    "cgbi-to-png": "^1.0.1",
     "fs-extra": "^0.24.0",
     "fstream": "^1.0.8",
     "glob": "^5.0.15",
