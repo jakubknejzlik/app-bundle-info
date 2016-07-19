@@ -36,6 +36,23 @@ describe('android',function(){
 
     })
 
+    it('should load and parse manifest from stream and mipmap',function(done){
+        var abi = new AppBundleInfo.Android(fs.createReadStream(__dirname+'/test-mipmap.apk'));
+
+        abi.getManifest(function(err,data){
+            if(err)return done(err);
+
+            assert.equal(data.versionCode,1);
+            assert.equal(data.versionName,'1.0');
+
+            abi.getIconFile(function(err,iconData){
+                assert.ifError(err);
+                done();
+            })
+        })
+
+    })
+
     it('should finish on invalid file',function(done){
         var abi = new AppBundleInfo.Android(fs.createReadStream(__dirname+'/test.ipa'));
 
