@@ -34,7 +34,7 @@ class AndroidAppBundleInfo extends AppBundleInfo
 
 
   getIconFile:(callback)->
-    @findFileStream('**/drawable-*/ic_launcher.png',(err, datas)=>
+    @findFileStream('**/mipmap-*/ic_launcher.png',(err, datas)=>
       if err
         return @findFileStream("**/drawable-*/ic_launcher.png", callback)
       return callback(err, datas)
