@@ -40,6 +40,7 @@ class AndroidAppBundleInfo
           writeStream = fstream.Writer(@extractPath)
 #          console.log('extracting',@extractPath)
           stream.pipe(unzip.Parse())
+            .on('error',callback)
             .pipe(writeStream)
             .on('close',()=>
               @extracted = yes
