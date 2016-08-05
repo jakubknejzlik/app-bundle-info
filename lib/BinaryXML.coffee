@@ -222,8 +222,8 @@ class BinaryXmlParser
         typedValue.type = 'fraction'
       else
         type = dataType.toString 16
-        console.debug "Not sure what to do with typed value of type 0x#{type}, falling
-                  back to reading an uint32"
+#        debug "Not sure what to do with typed value of type 0x#{type}, falling
+#                  back to reading an uint32"
         typedValue.value = this.readU32()
         typedValue.type = 'unknown'
 
