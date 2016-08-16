@@ -15,7 +15,6 @@ describe('android',function(){
 
             done()
         })
-
     })
 
     it('should load and parse manifest from stream',function(done){
@@ -33,7 +32,6 @@ describe('android',function(){
                 done();
             })
         })
-
     })
 
     it('should load and parse manifest from stream and mipmap',function(done){
@@ -50,7 +48,15 @@ describe('android',function(){
                 done();
             })
         })
+    })
 
+    it('should not crash on bad archive',function(done){
+        var abi = new AppBundleInfo.Android(fs.createReadStream(__dirname+'/bad_archive.apk'));
+
+        abi.getManifest(function(err,data){
+            assert.equal(err != null, true);
+            done();
+        })
     })
 
     it('should finish on invalid file',function(done){
