@@ -94,6 +94,21 @@ class AndroidAppBundleInfo
       )
     )
 
+  loadInfo: (callback)->
+    callback(new Error('not implemented'))
+
+  getIdentifier: ()->
+    return null
+
+  getName: ()->
+    return null
+
+  getVersionName: ()->
+    return null
+
+  getVersionCode: ()->
+    return null
+
 
 
 module.exports = AndroidAppBundleInfo

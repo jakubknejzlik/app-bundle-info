@@ -17,9 +17,19 @@ You can get information from file or stream. If you don't know the type of bundl
 var AppBundleInfo = require('app-bundle-info')
 
 AppBundleInfo.autodetect(ipaStream,function(err,bundleInfo){
-    bundleInfo.getPlist(function(err,plistData){
+    bundleInfo.loadInfo(function(err,information){
 
-        console.log(plistData.CFBundleName);
+        if (bundleInfo.type == 'ios') {
+            assert.equal(bundleInfo.getIdentifier(), information.CFBundleIdentifier)
+            assert.equal(bundleInfo.getName(), information.CFBundleDisplayName || information.CFBundleName)
+            assert.equal(bundleInfo.getVersionName(), information.CFBundleShortVersionString)
+            assert.equal(bundleInfo.getVersionCode(), information.CFBundleVersion)
+        } else if (bundleInfo.type == 'android') {
+            assert.equal(bundleInfo.getIdentifier(), information.package)
+            assert.equal(bundleInfo.getName(), information.package) // TODO: get application icon name
+            assert.equal(bundleInfo.getVersionName(), information.versionName)
+            assert.equal(bundleInfo.getVersionCode(), information.versionCode)
+        }
 
     });
 });

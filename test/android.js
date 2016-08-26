@@ -27,6 +27,10 @@ describe('android',function(){
             assert.equal(data.versionName,'1.0');
             assert.equal(data.package,'com.octo.android.robodemo.sample');
 
+            assert.equal(abi.getVersionCode(),1);
+            assert.equal(abi.getVersionName(),'1.0');
+            assert.equal(abi.getIdentifier(),'com.octo.android.robodemo.sample');
+
             abi.getIconFile(function(err,iconData){
                 assert.ifError(err);
                 done();

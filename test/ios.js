@@ -19,6 +19,9 @@ describe('ios',function(){
                 assert.equal(data.CFBundleVersion,file.version);
                 assert.equal(data.CFBundleName,file.name);
 
+                assert.equal(abi.getVersionCode(),file.version);
+                assert.equal(abi.getName(),file.name);
+
                 cb()
             });
         },done);

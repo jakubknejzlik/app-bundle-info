@@ -25,6 +25,8 @@ class AndroidAppBundleInfo extends AppBundleInfo
       )
     )
 
+  loadInfo: (callback)->
+    return @getManifest(callback)
 
   getManifest:(callback)->
     @_loadFileInfo (err)=>
@@ -40,6 +42,17 @@ class AndroidAppBundleInfo extends AppBundleInfo
       return callback(err, datas)
     )
 
+  getIdentifier: ()->
+    return @_info?.manifest?.package
+
+  getName: ()->
+    return @_info?.manifest?.package
+
+  getVersionName: ()->
+    return @_info?.manifest?.versionName
+
+  getVersionCode: ()->
+    return @_info?.manifest?.versionCode
 
 
 module.exports = AndroidAppBundleInfo

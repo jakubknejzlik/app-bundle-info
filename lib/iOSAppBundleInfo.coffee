@@ -30,7 +30,6 @@ class iOSAppBundleInfo extends AppBundleInfo
       )
     )
 
-
   parsePlist:(data,callback)->
     if ('bplist00' != data.slice(0, 8).toString('ascii'))
       try
@@ -42,6 +41,9 @@ class iOSAppBundleInfo extends AppBundleInfo
         return callback(err) if err
         callback(null,result[0])
       )
+
+  loadInfo: (callback)->
+    return @getPlist(callback)
 
   getPlist:(callback)->
     @_loadFileInfo (err)=>
@@ -56,6 +58,18 @@ class iOSAppBundleInfo extends AppBundleInfo
       return callback() if not stream
       cgbiToPng(stream,callback)
     )
+
+  getIdentifier: ()->
+    return @_info?.plist?.CFBundleIdentifier
+
+  getName: ()->
+    return @_info?.plist?.CFBundleDisplayName or @_info?.plist?.CFBundleName
+
+  getVersionName: ()->
+    return @_info?.plist?.CFBundleShortVersionString
+
+  getVersionCode: ()->
+    return @_info?.plist?.CFBundleVersion
 
 
 
