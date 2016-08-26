@@ -17,7 +17,7 @@
     "plist": "^1.1.0",
     "stream-to-buffer": "0.1.0",
     "tmp": "0.0.28",
-    "unzip": "git+https://github.com/jakubknejzlik/node-unzip-2.git"
+    "yauzl": "^2.6.0"
   },
   "scripts": {
     "test": "mocha test"

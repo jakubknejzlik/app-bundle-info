@@ -1,20 +1,22 @@
-unzip = require('unzip')
+yauzl = require('yauzl')
 fs = require('fs-extra')
 stream = require('stream')
-streamToBuffer = require('stream-to-buffer')
 tmp = require('tmp')
 glob = require('glob')
 Lock = require('lock')
 fstream = require('fstream')
+path = require('path')
 
 class AndroidAppBundleInfo
   constructor:(@pathOrStream)->
     @extracted = no
     @lock = new Lock()
     @type = 'general'
+    @tmpPath = null
 
   clearContents:(callback)->
     callback = callback or ()->
+
     if @extracted
       fs.remove(@extractPath,(err)=>
         return callback(err) if err
@@ -27,35 +29,57 @@ class AndroidAppBundleInfo
 
 
 
-  _extractContents:(callback)->
+  _extractContents:(_callback)->
     if @extracted
-      return callback()
+     return _callback()
+    callback = (err)=>
+      if not @tmpPath
+        return _callback(err)
+      fs.remove(@tmpPath,()->
+        _callback(err)
+      )
     @lock('extract',(release)=>
       callback = release(callback)
-      @_getFileStream((err,stream)=>
+      @_getFilePath((err,zippath)=>
         return callback(err) if err
         tmp.dir((err,extractPath)=>
           return callback(err) if err
           @extractPath = extractPath
-          writeStream = fstream.Writer(@extractPath)
-#          console.log('extracting',@extractPath)
-          stream.pipe(unzip.Parse())
-            .on('error',callback)
-            .pipe(writeStream)
-            .on('close',()=>
+          yauzl.open(zippath, (err, zipfile)=>
+            return callback(err) if err
+            zipfile.on('error',callback)
+            zipfile.on('entry',(entry)->
+              if /\/$/.test(entry.fileName)
+                return
+              zipfile.openReadStream(entry,(err,readStream)->
+                filePath = path.join(extractPath,entry.fileName)
+                fs.ensureDir(path.dirname(filePath),(err)->
+                  return callback(err) if err
+                  readStream.pipe(fs.createWriteStream(filePath))
+                )
+              )
+            )
+            zipfile.on('close',()=>
               @extracted = yes
               callback()
             )
-            .on('error',callback)
+          )
         )
       )
     )
 
-  _getFileStream:(callback)->
+  _getFilePath:(callback)->
     if @pathOrStream instanceof stream.Readable
-      callback(null,@pathOrStream)
+      tmp.file((err,file)=>
+        return callback(err) if err
+        @tmpPath = file
+        @pathOrStream.pipe(fs.createWriteStream(file))
+        .on('close',()->
+          callback(null,file)
+        ).on('error',callback)
+      )
     else
-      callback(null,fs.createReadStream(@pathOrStream))
+      callback(null,@pathOrStream)
 
   findFileStream:(matchFile,callback)->
     @_extractContents((err)=>

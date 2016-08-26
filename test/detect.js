@@ -3,6 +3,7 @@ var assert = require('assert')
 var fs = require('fs')
 
 describe('detect',function(){
+    this.timeout(5000)
     it('should detect android',function(done){
         AppBundleInfo.autodetect(__dirname+'/test.apk',function(err,abi){
             assert.ifError(err);
