@@ -36,11 +36,26 @@ class AndroidAppBundleInfo extends AppBundleInfo
 
 
   getIconFile:(callback)->
-    @findFileStream('**/mipmap-*/ic_launcher.png',(err, datas)=>
-      if err
-        return @findFileStream("**/drawable-*/ic_launcher.png", callback)
-      return callback(err, datas)
-    )
+    find = (index, cb) =>
+      if !lookupOrdered[index]
+        return cb(new Error('Icon not found'))
+      path = lookupOrdered[index]
+      @findFileStream path, (err, datas) ->
+        if err then find(index + 1, cb) else cb(null, datas)
+
+    lookupOrdered = [
+      '**/mipmap-xxxhdpi*/ic_launcher.png'
+      '**/drawable-xxxhdpi*/ic_launcher.png'
+      '**/mipmap-xxhdpi*/ic_launcher.png'
+      '**/drawable-xxhdpi*/ic_launcher.png'
+      '**/mipmap-xhdpi*/ic_launcher.png'
+      '**/drawable-xhdpi*/ic_launcher.png'
+      '**/mipmap-hdpi*/ic_launcher.png'
+      '**/drawable-hdpi*/ic_launcher.png'
+      '**/mipmap-*/ic_launcher.png'
+      '**/drawable-*/ic_launcher.png'
+    ]
+    find(0, callback)
 
   getIdentifier: ()->
     return @_info?.manifest?.package
