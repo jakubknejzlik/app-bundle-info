@@ -5,7 +5,8 @@ var async = require('async');
 
 var files = [
     {file:__dirname+'/test.ipa',version:'0.1.2',name:'map-viewer'},
-    {file:__dirname+'/test2.ipa',version:'1.3.21',name:'ci-test-app'}
+    {file:__dirname+'/test2.ipa',version:'1.3.21',name:'ci-test-app'},
+    {file:__dirname+'/test3.ipa',version:'1.0.6',name:'ToitsAtlantiques'}
 ]
 
 describe('ios',function(){
@@ -41,6 +42,22 @@ describe('ios',function(){
                     assert.ifError(err);
                     cb();
                 })
+            });
+        },done);
+    })
+
+     it.only('should load and get the icon from file',function(done){
+        this.timeout(5000);
+        async.forEach(files,function(file,cb){
+            var abi = new AppBundleInfo.iOS(file.file);
+
+            abi.getPlist(function(err, data){
+                if(err)return cb(err);
+
+                abi.getIconFile(function(err, streamIcon) {
+                    if(err) return cb(new Error("Cannot read icon from this iOS package"));
+                    cb();
+                });
             });
         },done);
     })
