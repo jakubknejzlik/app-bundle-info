@@ -45,7 +45,7 @@ describe('ios',function(){
         },done);
     })
 
-     it.only('should load and get the icon from ipa using the plist',function(done){
+    it('should load and get the icon from ipa using the plist',function(done){
         this.timeout(5000);
         async.forEach(files,function(file,cb){
             var abi = new AppBundleInfo.iOS(file.file);
