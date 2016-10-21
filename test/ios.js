@@ -45,6 +45,22 @@ describe('ios',function(){
         },done);
     })
 
+    it('should load and get the icon from ipa using the plist',function(done){
+        this.timeout(5000);
+        async.forEach(files,function(file,cb){
+            var abi = new AppBundleInfo.iOS(file.file);
+
+            abi.getPlist(function(err, data){
+                if(err)return cb(err);
+
+                abi.getIconFile(function(err, streamIcon) {
+                    if(err) return cb(new Error("Cannot read icon from this iOS package"));
+                    cb();
+                });
+            });
+        },done);
+    })
+
     it('should finish on invalid file',function(done){
         var abi = new AppBundleInfo.iOS(fs.createReadStream(__dirname+'/test.apk'));
 
