@@ -52,12 +52,42 @@ class iOSAppBundleInfo extends AppBundleInfo
       callback(null,@_info.plist)
 
 
-  getIconFile:(callback)->
-    @findFileStream('Payload/*.app/AppIcon60x60@*.png',(err,stream)->
-      return callback(err) if err
-      return callback() if not stream
-      cgbiToPng(stream,callback)
-    )
+  getIconFile: (callback) ->
+
+    createSubNames = (initial, endname) ->
+      [
+        initial + '@3x' + endname + '.png'
+        initial + '@2x' + endname + '.png'
+      ]
+
+    find = (index, lookup, cb) ->
+      if !lookup[index]
+        return cb(new Error('Icon not found'))
+      self.findFileStream 'Payload/*.app/' + lookup[index], (err, stream) ->
+        if err
+          return find(index - 1, lookup, cb)
+        if !stream
+          return cb()
+        cgbiToPng stream, cb
+      return
+
+    lookupType = (origin, lookup, cb) ->
+      if origin and origin.CFBundlePrimaryIcon and origin.CFBundlePrimaryIcon.CFBundleIconFiles
+        origin.CFBundlePrimaryIcon.CFBundleIconFiles.forEach (e) ->
+          lookup = lookup.concat(createSubNames(e, ''))
+          return
+        return find(lookup.length - 1, lookup, cb)
+      cb new Error('No icons found in plist for this type')
+
+    if !@_info
+      return callback(new Error('No plist found'))
+    _plist = @_info.plist
+    self = this
+    lookupType _plist.CFBundleIcons, [], (err, datas) ->
+      if err
+        return lookupType(_plist['CFBundleIcons~ipad'], [ '*60x60@*.png' ], callback)
+      callback err, datas
+    return
 
   getIdentifier: ()->
     return @_info?.plist?.CFBundleIdentifier
