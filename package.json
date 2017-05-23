@@ -5,7 +5,7 @@
   "keywords": "ipa,bundle,app,plist,info,unzip,apk,android,manifest",
   "license": "MIT",
   "dependencies": {
-    "apk-parser2": "0.1.1",
+    "apk-parser3": "0.1.7",
     "binary": "0.3.0",
     "bplist": "0.0.4",
     "cgbi-to-png": "^1.0.1",
