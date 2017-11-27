@@ -18,11 +18,12 @@ describe('android',function(){
     })
 
     it('should load and parse manifest from stream',function(done){
-        var abi = new AppBundleInfo.Android(fs.createReadStream(__dirname+'/test.apk'));
+        const path = __dirname+'/test.apk'
+        var abi = new AppBundleInfo.Android(fs.createReadStream(path));
 
         abi.getManifest(function(err,data){
             if(err)return done(err);
-
+            
             assert.equal(data.versionCode,1);
             assert.equal(data.versionName,'1.0');
             assert.equal(data.package,'com.octo.android.robodemo.sample');
@@ -37,9 +38,24 @@ describe('android',function(){
             })
         })
     })
+    
+    it('should work with custom icon name',function(done){
+        const path = __dirname+'/custom-icon.apk'
+        var abi = new AppBundleInfo.Android(fs.createReadStream(path));
+
+        abi.getManifest(function(err,data){
+            if(err)return done(err);
+
+            abi.getIconFile(function(err, iconData){
+                assert.ifError(err);
+                done();
+            })
+        })
+    })
 
     it('should load and parse manifest from stream and mipmap',function(done){
-        var abi = new AppBundleInfo.Android(fs.createReadStream(__dirname+'/test-mipmap.apk'));
+        const path = __dirname+'/test-mipmap.apk'
+        var abi = new AppBundleInfo.Android(fs.createReadStream(path));
 
         abi.getManifest(function(err,data){
             if(err)return done(err);
@@ -64,6 +80,8 @@ describe('android',function(){
     })
 
     it('should finish on invalid file',function(done){
+        
+		this.timeout(5000);
         var abi = new AppBundleInfo.Android(fs.createReadStream(__dirname+'/test.ipa'));
 
         abi.getManifest(function(err){

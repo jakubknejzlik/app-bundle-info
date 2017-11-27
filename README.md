@@ -50,3 +50,13 @@ bundleInfo.getIcon(function(err,iconStream){
     iconStream.pipe(fs.createWriteStream('icon.png'));
 });
 ```
+
+# Know issues
+
+On x64 linux distributions, aapt won't work, you must install these libraries to allow custom names in icons : 
+
+```
+sudo dpkg --add-architecture i386
+sudo apt-get -qqy update
+sudo apt-get -qqy install libncurses5:i386 libstdc++6:i386 zlib1g:i386
+```
