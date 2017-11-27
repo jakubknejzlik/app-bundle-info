@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "apk-parser3": "0.1.7",
+    "async": "^1.5.2",
     "binary": "0.3.0",
     "bplist": "0.0.4",
     "cgbi-to-png": "^1.0.1",
